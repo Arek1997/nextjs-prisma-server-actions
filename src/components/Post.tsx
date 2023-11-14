@@ -7,18 +7,9 @@ import {
   ButtonGroup,
   Button,
 } from "@nextui-org/react";
+import type { Post } from "@/types/post";
 
-export interface PostInterface {
-  _id: string;
-  author: string;
-  date: string;
-  title: string;
-  content: string;
-  image: string;
-  imageAlt: string;
-}
-
-type Props = PostInterface;
+type Props = Post;
 
 const Post = ({ author, date, title, content, image, imageAlt }: Props) => {
   return (
