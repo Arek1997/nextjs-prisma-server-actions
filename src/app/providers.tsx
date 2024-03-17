@@ -1,7 +1,13 @@
 "use client";
 
+import { PropsWithChildren } from "react";
 import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider } from "@/context/Theme";
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  return <NextUIProvider>{children}</NextUIProvider>;
+export function Provider({ children }: PropsWithChildren) {
+  return (
+    <ThemeProvider>
+      <NextUIProvider>{children}</NextUIProvider>
+    </ThemeProvider>
+  );
 }
