@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import Logo from "@/components/Logo";
 import { usePathname } from "next/navigation";
+import ThemeSwitch from "./ThemeSwitch";
 
 const menuItems = [
   {
@@ -70,6 +71,7 @@ const Navigation = () => {
         })}
       </NavbarContent>
       <NavbarContent justify="end">
+        <ThemeSwitch />
         <NavbarItem>
           <Button
             as={Link}
