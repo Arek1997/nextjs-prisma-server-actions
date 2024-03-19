@@ -9,6 +9,9 @@ export const getPosts = async () => {
       include: {
         user: true,
       },
+      orderBy: {
+        date: "desc",
+      },
     });
     console.log("posts: ", posts);
     return posts;
