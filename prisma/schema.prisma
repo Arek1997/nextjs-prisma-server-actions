@@ -26,9 +26,10 @@ model posts {
 }
 
 model users {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  email    String
-  name     String
-  password String
-  posts    posts[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  email     String
+  name      String
+  password  String
+  posts     posts[]
 }
