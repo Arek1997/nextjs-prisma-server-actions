@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Provider } from "./providers";
+import ThemePrivider from "@/providers/ThemeProvider";
+import NextUI from "@/providers/NextUI";
 import Navigation from "@/components/Navigation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="light">
       <body className={inter.className}>
-        <Provider>
-          <Navigation />
-          <main className="container pt-5 text-center">{children}</main>
-        </Provider>
+        <ThemePrivider>
+          <NextUI>
+            <Navigation />
+            <main className="container pt-5 text-center">{children}</main>
+          </NextUI>
+        </ThemePrivider>
       </body>
     </html>
   );
