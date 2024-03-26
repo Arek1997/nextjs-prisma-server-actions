@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import ThemePrivider from "@/providers/ThemeProvider";
 import NextUI from "@/providers/NextUI";
 import Navigation from "@/components/Navigation";
+import Session from "@/services/session";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +18,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const hasSession = Session().get();
+
   return (
     <html lang="en" className="light">
       <body className={inter.className}>
         <ThemePrivider>
           <NextUI>
-            <Navigation />
+            <Navigation hasSession={hasSession} />
             <main className="container pt-5 text-center">{children}</main>
           </NextUI>
         </ThemePrivider>

@@ -1,7 +1,12 @@
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import Session from "./services/session";
 
 export function middleware(request: NextRequest) {
-  console.log(request.nextUrl.pathname);
+  const hasSession = Session().get();
+
+  if (!hasSession) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 }
 
 export const config = {
