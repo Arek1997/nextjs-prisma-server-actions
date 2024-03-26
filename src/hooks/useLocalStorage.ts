@@ -1,3 +1,5 @@
+"use client";
+
 const useLocalStorage = <T>() => {
   const getValue = (key: string): T | null => {
     const value = localStorage.getItem(key);
