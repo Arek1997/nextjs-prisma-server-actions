@@ -3,12 +3,12 @@
 import prisma from "@/libs/prisma";
 import { z } from "zod";
 import bcript from "bcrypt";
-import { redirect } from "next/navigation";
-import { login } from "@/libs/session";
+import { permanentRedirect } from "next/navigation";
+import Session from "@/services/session";
 import { emailSchema } from "@/schema/email";
 import { passwordSchema } from "@/schema/password";
 
-const newAccount = z.object({
+const createAccountSchema = z.object({
   name: z.string({
     required_error: "User name required",
   }),
@@ -18,7 +18,9 @@ const newAccount = z.object({
 });
 
 export const createAccount = async (_: unknown, formData: FormData) => {
-  const result = newAccount.safeParse(Object.fromEntries(formData.entries()));
+  const result = createAccountSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   console.log(result);
 
@@ -63,7 +65,6 @@ export const createAccount = async (_: unknown, formData: FormData) => {
     },
   });
 
-  login(User);
-
-  redirect("/posts");
+  Session().create(User);
+  permanentRedirect("/posts");
 };
