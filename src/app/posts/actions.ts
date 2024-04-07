@@ -1,7 +1,10 @@
 "use server";
 
 import prisma from "@/libs/prisma";
+import type { users } from "@prisma/client";
+import Session from "@/services/session";
 import { revalidatePath } from "next/cache";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
 
 const post = z.object({
@@ -22,7 +25,7 @@ const post = z.object({
     }),
 });
 
-export const createPost = async (prevState: any, formData: FormData) => {
+export const createPost = async (_: unknown, formData: FormData) => {
   const result = post.safeParse(Object.fromEntries(formData.entries()));
 
   if (!result.success) {
@@ -37,9 +40,10 @@ export const createPost = async (prevState: any, formData: FormData) => {
   const { title, message } = result.data;
 
   try {
-    const response = await prisma.posts.create({
+    const user = jwt.decode(Session().get()!) as users;
+    await prisma.posts.create({
       data: {
-        user_id: "59b99db4cfa9a34dcd7885b6",
+        user_id: user.id,
         date: new Date().toISOString(),
         title,
         message,
