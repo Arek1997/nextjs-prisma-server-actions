@@ -12,14 +12,27 @@ import {
 import { Prisma } from "@prisma/client";
 import DeleteModal from "./DeleteModal";
 
-type Props = Prisma.postsGetPayload<{
+type PostsProps = Prisma.postsGetPayload<{
   include: {
-    user: true;
+    user: false;
   };
 }>;
 
-const Post = ({ id, title, message, date, user: { name } }: Props) => {
+type Props = {
+  modify: boolean;
+} & PostsProps;
+
+const Post = ({
+  id,
+  title,
+  message,
+  date,
+  modify,
+  //  user: { name }
+}: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  console.log("post modify: ", modify);
 
   return (
     <>
@@ -27,7 +40,8 @@ const Post = ({ id, title, message, date, user: { name } }: Props) => {
         <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
           <div className="flex w-full items-center justify-between">
             <p className="text-tiny uppercase">
-              Posted by <span className="font-bold">{name}</span>
+              {/* Posted by <span className="font-bold">{name }</span> */}
+              Posted by <span className="font-bold"></span>
             </p>
             <small className="text-default-500 underline">
               {new Date(date).toDateString()}
@@ -46,17 +60,21 @@ const Post = ({ id, title, message, date, user: { name } }: Props) => {
             <Button className="uppercase" variant="light">
               View
             </Button>
-            <Button className="uppercase" variant="light">
-              Edit
-            </Button>
-            <Button
-              className="uppercase"
-              color="danger"
-              variant="light"
-              onPress={onOpen}
-            >
-              Delete
-            </Button>
+            {modify && (
+              <>
+                <Button className="uppercase" variant="light">
+                  Edit
+                </Button>
+                <Button
+                  className="uppercase"
+                  color="danger"
+                  variant="light"
+                  onPress={onOpen}
+                >
+                  Delete
+                </Button>
+              </>
+            )}
           </ButtonGroup>
         </CardBody>
       </Card>

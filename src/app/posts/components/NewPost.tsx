@@ -23,9 +23,7 @@ const NewPosts = () => {
 
   return (
     <>
-      <Button className="mb-5 justify-self-center" onPress={onOpen}>
-        New posts
-      </Button>
+      <Button onPress={onOpen}>New posts</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
