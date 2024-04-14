@@ -8,28 +8,31 @@ datasource db {
 }
 
 model comments {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  data    String
-  message String
-  user_id String @db.ObjectId
-  post_id String @db.ObjectId
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime? @updatedAt
+  message    String
+  user_id    String    @db.ObjectId
+  post_id    String    @db.ObjectId
 }
 
 model posts {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  date     DateTime @db.Date
-  message  String
-  title    String
-  user     users    @relation(fields: [user_id], references: [id])
-  user_id  String   @db.ObjectId
-  comments String[]
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime? @updatedAt
+  title      String
+  message    String
+  user       users     @relation(fields: [user_id], references: [id])
+  user_id    String    @db.ObjectId
+  comments   String[]
 }
 
 model users {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  email     String
-  name      String
-  password  String
-  posts     posts[]
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime? @updatedAt
+  email      String
+  name       String
+  password   String
+  posts      posts[]
 }
