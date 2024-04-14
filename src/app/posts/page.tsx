@@ -17,13 +17,15 @@ const PostsPage = async () => {
 
   return (
     <section className="grid justify-center">
-      <div className="mb-4 flex items-center justify-between gap-6">
+      <div className="mb-8 flex items-center justify-between gap-6">
         <h1>Posts ({posts.length})</h1>
         <NewPosts />
       </div>
-      {posts.map((data) => (
-        <Post key={data.id} modify={user.id === data.user_id} {...data} />
-      ))}
+      {posts.length === 0
+        ? "No posts right now"
+        : posts.map((data) => (
+            <Post key={data.id} loggedUser={user} {...data} />
+          ))}
     </section>
   );
 };

@@ -9,30 +9,24 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { Prisma } from "@prisma/client";
+import type { users, posts } from "@prisma/client";
 import DeleteModal from "./DeleteModal";
 
-type PostsProps = Prisma.postsGetPayload<{
-  include: {
-    user: false;
-  };
-}>;
-
 type Props = {
-  modify: boolean;
-} & PostsProps;
+  user: users;
+  loggedUser: users;
+} & posts;
 
 const Post = ({
-  id,
+  id: postId,
+  createdAt,
   title,
   message,
-  date,
-  modify,
-  //  user: { name }
+  user_id: creatorId,
+  user: creator,
+  loggedUser,
 }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  console.log("post modify: ", modify);
 
   return (
     <>
@@ -40,11 +34,11 @@ const Post = ({
         <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
           <div className="flex w-full items-center justify-between">
             <p className="text-tiny uppercase">
-              {/* Posted by <span className="font-bold">{name }</span> */}
-              Posted by <span className="font-bold"></span>
+              Posted by{" "}
+              <span className="font-bold">{creator.name || "unknow"}</span>
             </p>
             <small className="text-default-500 underline">
-              {new Date(date).toDateString()}
+              {new Date(createdAt).toDateString()}
             </small>
           </div>
           <h2 className="mt-2 text-large font-bold">{title}</h2>
@@ -55,12 +49,12 @@ const Post = ({
             src="/images/girl.jpeg"
             alt="Girl image"
           />
-          <p className="mt-3 max-h-[100px] overflow-y-auto">{message}</p>
+          <p className="mt-3 line-clamp-3 max-h-[100px]">{message}</p>
           <ButtonGroup fullWidth className="mt-5">
             <Button className="uppercase" variant="light">
               View
             </Button>
-            {modify && (
+            {creatorId === loggedUser.id && (
               <>
                 <Button className="uppercase" variant="light">
                   Edit
@@ -79,7 +73,7 @@ const Post = ({
         </CardBody>
       </Card>
       <DeleteModal
-        postId={id}
+        postId={postId}
         postTitle={title}
         isOpen={isOpen}
         onOpenChange={onOpenChange}

@@ -7,7 +7,6 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { deletePost } from "../actions";
-import { revalidatePath } from "next/cache";
 
 type Props = {
   postId: string;
@@ -20,8 +19,8 @@ const DeleteModal = ({ postTitle, postId, isOpen, onOpenChange }: Props) => {
   const [deleting, setDeleting] = useState(false);
 
   const onDelete = async () => {
+    setDeleting(true);
     await deletePost(postId);
-    revalidatePath("/posts");
   };
 
   return (
