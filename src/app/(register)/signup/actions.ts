@@ -3,7 +3,7 @@
 import prisma from "@/libs/prisma";
 import { z } from "zod";
 import bcript from "bcrypt";
-import { permanentRedirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import Session from "@/services/session";
 import { emailSchema } from "@/schema/email";
 import { passwordSchema } from "@/schema/password";
@@ -21,8 +21,6 @@ export const createAccount = async (_: unknown, formData: FormData) => {
   const result = createAccountSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
-
-  console.log(result);
 
   if (!result.success) {
     const { message, path } = result.error.issues[0];
@@ -66,5 +64,5 @@ export const createAccount = async (_: unknown, formData: FormData) => {
   });
 
   Session().create(User);
-  permanentRedirect("/posts");
+  redirect(process.env.DEFAULT_ROUTE!);
 };

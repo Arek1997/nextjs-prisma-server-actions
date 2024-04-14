@@ -3,7 +3,7 @@
 import prisma from "@/libs/prisma";
 import { z } from "zod";
 import bcript from "bcrypt";
-import { permanentRedirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import Session from "@/services/session";
 import { emailSchema } from "@/schema/email";
 import { passwordSchema } from "@/schema/password";
@@ -43,5 +43,5 @@ export const userLogin = async (_: unknown, formData: FormData) => {
   }
 
   Session().create(user);
-  permanentRedirect("/");
+  redirect(process.env.DEFAULT_ROUTE!);
 };

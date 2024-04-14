@@ -4,6 +4,7 @@ import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { userLogin } from "./actions";
+import InputWithEye from "../components/InputWithEye";
 
 const Login = () => {
   const [state, formAction] = useFormState(userLogin, {
@@ -23,16 +24,17 @@ const Login = () => {
           <Input
             label="Email"
             name="email"
+            defaultValue="janek@email.pl"
             isInvalid={state?.invalidElement === "email"}
             errorMessage={state?.invalidElement === "email" && state?.error}
             isRequired
           />
         </div>
         <div>
-          <Input
+          <InputWithEye
             label="Password"
-            type="password"
             name="password"
+            defaultValue="11111111"
             isInvalid={state?.invalidElement === "password"}
             errorMessage={state?.invalidElement === "password" && state?.error}
             isRequired

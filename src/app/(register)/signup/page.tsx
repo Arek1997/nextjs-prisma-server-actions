@@ -4,14 +4,13 @@ import { Button, Input } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
 import { createAccount } from "./actions";
 import Link from "next/link";
+import InputWithEye from "../components/InputWithEye";
 
 const Signup = () => {
   const [state, formAction] = useFormState(createAccount, {
     error: "",
     invalidElement: "",
   });
-
-  console.log("Signup state: ", state);
 
   return (
     <div className="mx-auto mt-20 max-w-[500px] rounded-xl p-5 md:p-14">
@@ -37,9 +36,8 @@ const Signup = () => {
           />
         </div>
         <div>
-          <Input
+          <InputWithEye
             label="Password"
-            type="password"
             name="password"
             isInvalid={state?.invalidElement === "password"}
             errorMessage={state?.invalidElement === "password" && state?.error}
@@ -47,9 +45,8 @@ const Signup = () => {
           />
         </div>
         <div>
-          <Input
+          <InputWithEye
             label="Repeat Password"
-            type="password"
             name="repeatPassword"
             isInvalid={state?.invalidElement === "repeatPassword"}
             errorMessage={
