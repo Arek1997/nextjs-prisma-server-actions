@@ -4,7 +4,7 @@ import { Button, Input } from "@nextui-org/react";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { userLogin } from "./actions";
-import InputWithEye from "../components/InputWithEye";
+import InputWithEye from "@/components/InputWithEye";
 
 const Login = () => {
   const [state, formAction] = useFormState(userLogin, {
