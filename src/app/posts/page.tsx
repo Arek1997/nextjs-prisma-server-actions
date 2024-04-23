@@ -2,7 +2,7 @@ import NewPosts from "./components/NewPost";
 import Post from "./components/Post";
 import { getPosts } from "./api";
 import { notFound } from "next/navigation";
-import jwt from "jsonwebtoken";
+import Jwt from "@/services/jwt";
 import Session from "@/services/session";
 import type { users } from "@prisma/client";
 
@@ -13,7 +13,7 @@ const PostsPage = async () => {
     notFound();
   }
 
-  const user = jwt.decode(Session().get()!) as users;
+  const user = Jwt().verifyToken(Session().get()) as users;
 
   return (
     <section className="grid justify-center">
