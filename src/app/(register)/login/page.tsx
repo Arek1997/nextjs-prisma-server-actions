@@ -17,7 +17,7 @@ const Login = () => {
       <h1 className="mb-8">Login</h1>
 
       <form action={formAction} className="space-y-4">
-        {state.invalidElement === "response" && (
+        {state?.invalidElement === "response" && (
           <p className="text-sm text-red-400">{state?.error}</p>
         )}
         <div>

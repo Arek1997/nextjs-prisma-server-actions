@@ -1,6 +1,4 @@
-"use client";
-
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "@nextui-org/react";
 import { motion, AnimatePresence } from "framer-motion";
 import InputWithEye from "@/components/InputWithEye";
@@ -8,7 +6,6 @@ import { changePassword } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
 
 const ChangePassword = () => {
-  const formRef = useRef<HTMLFormElement>(null);
   const [showInputs, setShowInputs] = useState(false);
   const [state, formAction] = useFormState(changePassword, {
     error: "",
@@ -16,9 +13,9 @@ const ChangePassword = () => {
   });
 
   return (
-    <div className="mx-auto mt-8 space-y-4 text-left">
+    <div className="mx-auto mt-4 space-y-4 text-left">
       <Button
-        radius="sm"
+        radius="none"
         variant="ghost"
         disableAnimation
         onPress={() => setShowInputs((prevState) => !prevState)}
@@ -33,7 +30,6 @@ const ChangePassword = () => {
       <AnimatePresence>
         {showInputs && (
           <motion.form
-            ref={formRef}
             action={formAction}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -76,7 +72,7 @@ const SubmitButton = () => {
     <Button
       type="submit"
       className="mt-4"
-      radius="sm"
+      radius="none"
       variant="ghost"
       isLoading={pending}
       isDisabled={pending}

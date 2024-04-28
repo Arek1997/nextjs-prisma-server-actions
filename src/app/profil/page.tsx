@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getUser } from "./api";
-import ChangePassword from "./components/ChangePassword";
+import ProfilActions from "./components/ProfilActions";
 
 const ProfilPage = async () => {
   const currentUser = await getUser();
@@ -31,7 +31,8 @@ const ProfilPage = async () => {
           </p>
         )}
       </article>
-      <ChangePassword />
+
+      <ProfilActions />
     </section>
   );
 };
