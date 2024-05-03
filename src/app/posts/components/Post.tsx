@@ -14,7 +14,7 @@ import DeleteModal from "./DeleteModal";
 
 type Props = {
   user: users;
-  loggedUser: users;
+  loggedUserId: string;
 } & posts;
 
 const Post = ({
@@ -24,7 +24,7 @@ const Post = ({
   message,
   user_id: creatorId,
   user: creator,
-  loggedUser,
+  loggedUserId,
 }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -54,7 +54,7 @@ const Post = ({
             <Button className="uppercase" variant="light">
               View
             </Button>
-            {creatorId === loggedUser.id && (
+            {creatorId === loggedUserId && (
               <>
                 <Button className="uppercase" variant="light">
                   Edit

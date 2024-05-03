@@ -42,6 +42,8 @@ export const userLogin = async (_: unknown, formData: FormData) => {
     };
   }
 
-  Session().create(user);
+  Session().create({
+    id: user.id,
+  });
   redirect(process.env.DEFAULT_ROUTE!);
 };
