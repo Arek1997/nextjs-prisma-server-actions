@@ -13,13 +13,20 @@ import {
 } from "@nextui-org/react";
 import { createPost } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
+import { useEffect } from "react";
 
 const NewPosts = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [state, formAction] = useFormState(createPost, {
     error: "",
     invalidElement: "",
   });
+
+  useEffect(() => {
+    if (state.error.length === 0) {
+      onClose();
+    }
+  }, [state]);
 
   return (
     <>
@@ -27,17 +34,10 @@ const NewPosts = () => {
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
-            <form
-              action={(formData) => {
-                formAction(formData);
-                if (!state?.error) {
-                  onClose();
-                }
-              }}
-            >
+            <form action={formAction}>
               <ModalHeader className="grid gap-2">
                 New Post
-                {state?.error && (
+                {state.error && (
                   <p className="text-sm text-danger-400">{state.error}</p>
                 )}
               </ModalHeader>
@@ -47,7 +47,7 @@ const NewPosts = () => {
                   name="title"
                   label="TITLE"
                   variant="underlined"
-                  isInvalid={state?.invalidElement === "title"}
+                  isInvalid={state.invalidElement === "title"}
                   isRequired
                 />
                 <Input type="file" variant="underlined" />
@@ -55,7 +55,7 @@ const NewPosts = () => {
                   variant="underlined"
                   name="message"
                   label="Message"
-                  isInvalid={state?.invalidElement === "message"}
+                  isInvalid={state.invalidElement === "message"}
                   isRequired
                 />
               </ModalBody>

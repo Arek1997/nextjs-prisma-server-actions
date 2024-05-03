@@ -1,11 +1,11 @@
 "use server";
 
 import prisma from "@/libs/prisma";
-import type { users } from "@prisma/client";
 import Session from "@/services/session";
 import { revalidatePath } from "next/cache";
-import jwt from "jsonwebtoken";
+import Jwt from "@/services/jwt";
 import { z } from "zod";
+import { UserToken } from "@/types";
 
 const post = z.object({
   title: z
@@ -40,11 +40,10 @@ export const createPost = async (_: unknown, formData: FormData) => {
   const { title, message } = result.data;
 
   try {
-    const user = jwt.decode(Session().get()!) as users;
+    const user = Jwt().verifyToken(Session().get()) as UserToken;
     await prisma.posts.create({
       data: {
         user_id: user.id,
-        date: new Date().toISOString(),
         title,
         message,
       },
@@ -53,17 +52,22 @@ export const createPost = async (_: unknown, formData: FormData) => {
     revalidatePath("/posts");
   } catch (error) {
     console.error(error);
+  } finally {
+    return { error: "", invalidElement: "" };
   }
 };
 
 export const deletePost = async (postId: string) => {
-  try {
-    await prisma.posts.delete({
-      where: {
-        id: postId,
+  const user = Jwt().verifyToken(Session().get()) as UserToken;
+
+  await prisma.posts.delete({
+    where: {
+      id: postId,
+
+      AND: {
+        user_id: user.id,
       },
-    });
-  } catch (error) {
-    console.error(error);
-  }
+    },
+  });
+  revalidatePath("/posts");
 };
