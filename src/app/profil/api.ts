@@ -1,11 +1,11 @@
 import prisma from "@/libs/prisma";
 import Jwt from "@/services/jwt";
 import Session from "@/services/session";
-import { users } from "@prisma/client";
+import { UserToken } from "@/types";
 
 export const getUser = async () => {
   try {
-    const currentUser = Jwt().verifyToken(Session().get()) as users;
+    const currentUser = Jwt().verifyToken(Session().get()) as UserToken;
 
     if (!currentUser) {
       throw new Error("Invalid token. User not found");

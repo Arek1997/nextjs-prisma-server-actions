@@ -3,11 +3,13 @@
 import { z } from "zod";
 import bcript from "bcrypt";
 import { passwordSchema } from "@/schema/password";
+import { emailSchema } from "@/schema/email";
 import Session from "@/services/session";
-import { users } from "@prisma/client";
 import Jwt from "@/services/jwt";
 import prisma from "@/libs/prisma";
 import { logOutHandler } from "../actions/logout";
+import Email from "@/services/email";
+import { UserToken } from "@/types";
 
 const changePasswordSchema = z.object({
   "old-password": passwordSchema,
@@ -30,7 +32,7 @@ export const changePassword = async (_: unknown, formData: FormData) => {
 
   const oldPassword = result.data["old-password"];
 
-  const user = Jwt().verifyToken(Session().get()) as users;
+  const user = Jwt().verifyToken(Session().get()) as UserToken;
   const userPassword = await prisma.users
     .findUnique({
       where: {

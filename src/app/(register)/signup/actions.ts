@@ -55,7 +55,7 @@ export const createAccount = async (_: unknown, formData: FormData) => {
 
   const hashedPassword = await bcript.hash(password, 10);
 
-  const User = await prisma.users.create({
+  const newUser = await prisma.users.create({
     data: {
       name,
       email,
@@ -63,6 +63,8 @@ export const createAccount = async (_: unknown, formData: FormData) => {
     },
   });
 
-  Session().create(User);
+  Session().create({
+    id: newUser.id,
+  });
   redirect(process.env.DEFAULT_ROUTE!);
 };

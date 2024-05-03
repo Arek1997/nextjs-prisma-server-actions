@@ -28,11 +28,12 @@ model posts {
 }
 
 model users {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt  DateTime  @default(now())
-  modifiedAt DateTime? @updatedAt
-  email      String
-  name       String
-  password   String
-  posts      posts[]
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime  @default(now())
+  modifiedAt         DateTime? @updatedAt
+  email              String
+  name               String
+  password           String
+  posts              posts[]
+  resetPasswordToken String?
 }
