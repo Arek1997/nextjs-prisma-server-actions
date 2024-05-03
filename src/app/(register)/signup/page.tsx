@@ -5,6 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { createAccount } from "./actions";
 import Link from "next/link";
 import InputWithEye from "@/components/InputWithEye";
+import ForgotPassword from "../components/ForgotPassword";
 
 const Signup = () => {
   const [state, formAction] = useFormState(createAccount, {
@@ -61,6 +62,7 @@ const Signup = () => {
             <Link href="/login" className="underline">
               Login
             </Link>
+            <ForgotPassword />
           </p>
 
           <SubmitButton />

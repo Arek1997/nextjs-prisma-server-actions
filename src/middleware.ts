@@ -8,6 +8,10 @@ export function middleware(request: NextRequest) {
   const isPublic = publicRoutes.includes(pathName);
   const hasSession = Session().get();
 
+  if (pathName === "reset-password") {
+    return NextResponse.next();
+  }
+
   if (isPublic && hasSession) {
     return NextResponse.redirect(
       new URL(process.env.DEFAULT_ROUTE!, request.url)

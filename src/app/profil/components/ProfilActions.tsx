@@ -2,7 +2,7 @@
 
 import { Tabs, Tab } from "@nextui-org/react";
 import ChangePassword from "./ChangePassword";
-import ForgotPassword from "./ForgotPassword";
+import Link from "next/link";
 
 const ProfilActions = () => {
   return (
@@ -18,9 +18,12 @@ const ProfilActions = () => {
           <ChangePassword />
         </Tab>
 
-        <Tab key="forgot-password" title="Forgot password">
-          <ForgotPassword />
-        </Tab>
+        <Tab
+          key="forgot-password"
+          title="Forgot password"
+          as={Link}
+          href="/reset-password"
+        ></Tab>
       </Tabs>
     </>
   );

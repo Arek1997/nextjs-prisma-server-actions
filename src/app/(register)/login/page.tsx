@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { userLogin } from "./actions";
 import InputWithEye from "@/components/InputWithEye";
+import ForgotPassword from "../components/ForgotPassword";
 
 const Login = () => {
   const [state, formAction] = useFormState(userLogin, {
@@ -47,6 +48,7 @@ const Login = () => {
             <Link href="/signup" className="underline">
               Signup
             </Link>
+            <ForgotPassword />
           </p>
 
           <SubmitButton />
