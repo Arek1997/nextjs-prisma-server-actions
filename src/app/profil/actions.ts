@@ -3,13 +3,9 @@
 import { z } from "zod";
 import bcript from "bcrypt";
 import { passwordSchema } from "@/schema/password";
-import { emailSchema } from "@/schema/email";
-import Session from "@/services/session";
-import Jwt from "@/services/jwt";
 import prisma from "@/libs/prisma";
 import { logOutHandler } from "../actions/logout";
-import Email from "@/services/email";
-import { UserToken } from "@/types";
+import { getUserById } from "../actions/getUser";
 
 const changePasswordSchema = z.object({
   "old-password": passwordSchema,
@@ -30,17 +26,16 @@ export const changePassword = async (_: unknown, formData: FormData) => {
     };
   }
 
+  const user = await getUserById();
+
+  if (!user) {
+    console.error("user not found");
+    logOutHandler();
+    return;
+  }
+
   const oldPassword = result.data["old-password"];
-
-  const user = Jwt().verifyToken(Session().get()) as UserToken;
-  const userPassword = await prisma.users
-    .findUnique({
-      where: {
-        id: user.id,
-      },
-    })
-    .then((user) => user?.password);
-
+  const userPassword = user.password;
   const currentPasswordMatch = await bcript.compare(oldPassword, userPassword!);
 
   if (!currentPasswordMatch) {

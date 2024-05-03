@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { getUser } from "./api";
+import { getUserById } from "../actions/getUser";
 import ProfilActions from "./components/ProfilActions";
 
 const ProfilPage = async () => {
-  const currentUser = await getUser();
+  const currentUser = await getUserById();
 
   if (!currentUser) {
     redirect("/login");
