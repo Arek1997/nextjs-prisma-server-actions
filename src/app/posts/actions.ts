@@ -25,6 +25,14 @@ const post = z.object({
     }),
 });
 
+const comment = z
+  .string({
+    required_error: "Comment can not be empty",
+  })
+  .min(3, {
+    message: "Comment has to be at least 3 characters",
+  });
+
 export const createPost = async (_: unknown, formData: FormData) => {
   const result = post.safeParse(Object.fromEntries(formData.entries()));
 
@@ -70,4 +78,41 @@ export const deletePost = async (postId: string) => {
     },
   });
   revalidatePath("/posts");
+};
+
+export const addComment = async (_: unknown, formData: FormData) => {
+  const result = comment.safeParse(formData.get("comment"));
+
+  if (!result.success) {
+    const { message, path } = result.error.issues[0];
+
+    return { success: false, error: message, invalidElement: path[0] };
+  }
+
+  try {
+    const postID = formData.get("post-id") as string;
+    const userID = formData.get("user-id") as string;
+    const commentMesage = result.data;
+
+    await prisma.comments.create({
+      data: {
+        message: commentMesage,
+        posts_id: postID,
+        user_id: userID,
+      },
+    });
+    revalidatePath("/posts");
+    return {
+      success: true,
+      error: "",
+      invalidElement: "",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Faild to send comment, some error occurred. Try again.",
+      invalidElement: "",
+    };
+  }
 };

@@ -12,28 +12,31 @@ model comments {
   createdAt  DateTime  @default(now())
   modifiedAt DateTime? @updatedAt
   message    String
+  user       users     @relation(fields: [user_id], references: [id])
   user_id    String    @db.ObjectId
-  post_id    String    @db.ObjectId
+  posts      posts     @relation(fields: [posts_id], references: [id])
+  posts_id   String    @db.ObjectId
 }
 
 model posts {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt  DateTime  @default(now())
-  modifiedAt DateTime? @updatedAt
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime   @default(now())
+  modifiedAt DateTime?  @updatedAt
   title      String
   message    String
-  user       users     @relation(fields: [user_id], references: [id])
-  user_id    String    @db.ObjectId
-  comments   String[]
+  user       users      @relation(fields: [user_id], references: [id])
+  user_id    String     @db.ObjectId
+  comments   comments[]
 }
 
 model users {
-  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt          DateTime  @default(now())
-  modifiedAt         DateTime? @updatedAt
-  email              String    @unique
+  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime   @default(now())
+  modifiedAt         DateTime?  @updatedAt
+  email              String     @unique
   name               String
   password           String
   posts              posts[]
+  comments           comments[]
   resetPasswordToken String?
 }
