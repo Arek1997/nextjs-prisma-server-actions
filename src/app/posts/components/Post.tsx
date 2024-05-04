@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import type { users, posts } from "@prisma/client";
 import DeleteModal from "./DeleteModal";
+import Link from "next/link";
 
 type Props = {
   user: users;
@@ -51,7 +52,12 @@ const Post = ({
           />
           <p className="mt-3 line-clamp-3 max-h-[100px]">{message}</p>
           <ButtonGroup fullWidth className="mt-5">
-            <Button className="uppercase" variant="light">
+            <Button
+              as={Link}
+              href={`/posts/${postId}`}
+              className="uppercase"
+              variant="light"
+            >
               View
             </Button>
             {creatorId === loggedUserId && (
