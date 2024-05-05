@@ -5,12 +5,15 @@ import Jwt from "@/services/jwt";
 import Session from "@/services/session";
 import { UserToken } from "@/types";
 
+export const getUserToken = async () =>
+  Jwt().verifyToken(Session().get()) as UserToken;
+
 export const getUserById = async (id?: string) => {
   let userId;
 
   try {
     if (!id) {
-      const user = Jwt().verifyToken(Session().get()) as UserToken;
+      const user = await getUserToken();
       userId = user.id;
     } else {
       userId = id;

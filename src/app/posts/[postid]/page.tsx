@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { getPostWithComments } from "../api";
 import Comments from "../components/Comments";
-import { getUserById } from "@/app/actions/getUser";
+import { getUserToken } from "@/app/actions/getUser";
 import { logOutHandler } from "@/app/actions/logout";
+import { notFound } from "next/navigation";
+import { formatDate } from "@/utils/functions";
 
 type Props = {
   params: { postid: string };
@@ -11,11 +13,11 @@ type Props = {
 const PostDetailsPage = async ({ params: { postid } }: Props) => {
   const [post, user] = await Promise.allSettled([
     getPostWithComments(postid),
-    getUserById(),
+    getUserToken(),
   ]);
 
   if (post.status === "rejected" || !post.value) {
-    return <p>Post not found.</p>;
+    notFound();
   }
 
   if (user.status === "rejected" || !user.value) {
@@ -23,15 +25,15 @@ const PostDetailsPage = async ({ params: { postid } }: Props) => {
   }
 
   return (
-    <section className="mx-auto mt-20 md:max-w-[80%] xl:max-w-[90%]">
+    <>
       <article>
         <header className="flex items-center justify-between gap-4">
           <h1 className="text-2xl">{post.value.title}</h1>
           <time
             className="text-sm underline"
-            dateTime={new Date(post.value.createdAt).toLocaleDateString()}
+            dateTime={formatDate(post.value.createdAt)}
           >
-            {new Date(post.value.createdAt).toDateString()}
+            {formatDate(post.value.createdAt)}
           </time>
         </header>
         <div className="p-10">
@@ -46,20 +48,31 @@ const PostDetailsPage = async ({ params: { postid } }: Props) => {
 
         <p className="text-left">{post.value.message}</p>
 
-        <footer className="my-8">
-          <p className="text-right text-sm">
-            Author{" "}
-            <span className="italic underline">{post.value.user.name}</span>
+        <footer className="my-8 space-y-1 text-right text-xs">
+          <p className="underline">
+            Author: <span className="italic">{post.value.user.name}</span>
           </p>
+          {post.value.edited && (
+            <p className="underline">
+              Last modification:{" "}
+              <time
+                className="italic"
+                dateTime={formatDate(post.value.modifiedAt)}
+              >
+                {formatDate(post.value.modifiedAt)}
+              </time>
+            </p>
+          )}
         </footer>
       </article>
 
       <Comments
         userId={user.value.id}
         postId={post.value.id}
+        postAuthorId={post.value.user_id}
         comments={post.value.comments}
       />
-    </section>
+    </>
   );
 };
 

@@ -2,10 +2,8 @@ import NewPosts from "./components/NewPost";
 import Post from "./components/Post";
 import { getPosts } from "./api";
 import { notFound } from "next/navigation";
-import Jwt from "@/services/jwt";
-import Session from "@/services/session";
-import { UserToken } from "@/types";
 import Response from "@/components/Response";
+import { getUserToken } from "../actions/getUser";
 
 const PostsPage = async () => {
   const posts = await getPosts();
@@ -14,7 +12,7 @@ const PostsPage = async () => {
     notFound();
   }
 
-  const user = Jwt().verifyToken(Session().get()) as UserToken;
+  const user = await getUserToken();
 
   return (
     <section className="grid justify-center">
