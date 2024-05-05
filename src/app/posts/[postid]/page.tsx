@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getPostWithId } from "../api";
+import { getPostWithComments } from "../api";
 import Comments from "../components/Comments";
 import { getUserById } from "@/app/actions/getUser";
 import { logOutHandler } from "@/app/actions/logout";
@@ -10,7 +10,7 @@ type Props = {
 
 const PostDetailsPage = async ({ params: { postid } }: Props) => {
   const [post, user] = await Promise.allSettled([
-    getPostWithId(postid),
+    getPostWithComments(postid),
     getUserById(),
   ]);
 
@@ -25,7 +25,7 @@ const PostDetailsPage = async ({ params: { postid } }: Props) => {
   return (
     <section className="mx-auto mt-20 md:max-w-[80%] xl:max-w-[90%]">
       <article>
-        <header className="mb-8 flex items-center justify-between gap-4">
+        <header className="flex items-center justify-between gap-4">
           <h1 className="text-2xl">{post.value.title}</h1>
           <time
             className="text-sm underline"
@@ -34,10 +34,11 @@ const PostDetailsPage = async ({ params: { postid } }: Props) => {
             {new Date(post.value.createdAt).toDateString()}
           </time>
         </header>
-        <div className="float-right p-10">
+        <div className="p-10">
           <Image
             src="/images/girl.jpeg"
             alt="Girl image"
+            className="mx-auto"
             width={600}
             height={400}
           />

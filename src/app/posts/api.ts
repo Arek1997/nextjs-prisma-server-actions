@@ -29,3 +29,23 @@ export const getPostWithId = async (id: string) => {
     console.error("Faild to fetch post. Error: ", error);
   }
 };
+
+export const getPostWithComments = async (id: string) => {
+  try {
+    const posts = await prisma.posts.findFirst({
+      where: { id },
+      include: {
+        user: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    return posts;
+  } catch (error) {
+    console.error("Faild to fetch post. Error: ", error);
+  }
+};

@@ -34,7 +34,7 @@ const Comments = ({ userId, postId, comments }: Props) => {
   }, [state]);
 
   return (
-    <div className="my-48 text-right">
+    <div className="mt-14 border-t pt-5 text-right">
       <h2 className="mb-4 text-left">Comments ({comments.length})</h2>
 
       {comments.map((item) => {
@@ -70,7 +70,7 @@ const Comment = ({
   children,
 }: CommentsWithUser & PropsWithChildren) => {
   return (
-    <div className="mb-4 rounded-lg border p-4 text-left">
+    <div className="mb-6 rounded-lg border p-4 text-left">
       <div className="mb-2 flex items-center justify-start gap-4 text-xs">
         <span>{user.name}</span>
         <time

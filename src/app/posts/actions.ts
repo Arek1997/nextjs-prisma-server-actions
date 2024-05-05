@@ -71,7 +71,6 @@ export const deletePost = async (postId: string) => {
   await prisma.posts.delete({
     where: {
       id: postId,
-
       AND: {
         user_id: user.id,
       },
