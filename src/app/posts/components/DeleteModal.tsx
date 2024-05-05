@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Response from "@/components/Response";
 import {
   Modal,
   ModalContent,
@@ -5,7 +7,6 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import { useState } from "react";
 
 type Props = {
   title: string;
@@ -45,7 +46,7 @@ const DeleteModal = ({
             <ModalHeader className="flex flex-col gap-2">
               <h2>{title}</h2>
               <p>Are you sure you wanna delete this?</p>
-              {error && <p className="text-sm text-red-600">{error}</p>}
+              {error && <Response error>{error}</Response>}
             </ModalHeader>
 
             <ModalFooter>

@@ -6,6 +6,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { userLogin } from "./actions";
 import InputWithEye from "@/components/InputWithEye";
 import ForgotPassword from "../components/ForgotPassword";
+import Response from "@/components/Response";
 
 const Login = () => {
   const [state, formAction] = useFormState(userLogin, {
@@ -19,7 +20,7 @@ const Login = () => {
 
       <form action={formAction} className="space-y-4">
         {state?.invalidElement === "response" && (
-          <p className="text-sm text-red-400">{state?.error}</p>
+          <Response error>{state?.error}</Response>
         )}
         <div>
           <Input

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Jwt from "@/services/jwt";
 import Session from "@/services/session";
 import { UserToken } from "@/types";
+import Response from "@/components/Response";
 
 const PostsPage = async () => {
   const posts = await getPosts();
@@ -21,11 +22,13 @@ const PostsPage = async () => {
         <h1>Posts ({posts.length})</h1>
         <NewPosts />
       </div>
-      {posts.length === 0
-        ? "No posts right now"
-        : posts.map((data) => (
-            <Post key={data.id} loggedUserId={user.id} {...data} />
-          ))}
+      {posts.length === 0 ? (
+        <Response>No posts right now</Response>
+      ) : (
+        posts.map((data) => (
+          <Post key={data.id} loggedUserId={user.id} {...data} />
+        ))
+      )}
     </section>
   );
 };

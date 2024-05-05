@@ -14,6 +14,7 @@ import {
 import { createPost } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect } from "react";
+import Response from "@/components/Response";
 
 const NewPosts = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -37,9 +38,7 @@ const NewPosts = () => {
             <form action={formAction}>
               <ModalHeader className="grid gap-2">
                 New Post
-                {state.error && (
-                  <p className="text-sm text-danger-400">{state.error}</p>
-                )}
+                {state.error && <Response error>{state.error}</Response>}
               </ModalHeader>
               <ModalBody>
                 <Input

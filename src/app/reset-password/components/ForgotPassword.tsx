@@ -5,6 +5,7 @@ import { Button, Input } from "@nextui-org/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { sendResetEmail } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
+import Response from "@/components/Response";
 
 const ForgotPassword = () => {
   const [showInputs, setShowInputs] = useState(false);
@@ -45,9 +46,7 @@ const ForgotPassword = () => {
               autoFocus
               isRequired
             />
-            {state?.success && (
-              <p className="text-sm text-green-600">{state.success}</p>
-            )}
+            {state?.success && <Response success>{state.success}</Response>}
             <SubmitButton />
           </motion.form>
         )}

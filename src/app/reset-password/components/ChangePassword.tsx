@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/react";
 import { useFormState, useFormStatus } from "react-dom";
 import { resetPassword } from "../actions";
 import InputWithEye from "@/components/InputWithEye";
+import Response from "@/components/Response";
 
 type Props = {
   token: string;
@@ -30,9 +31,7 @@ const ChangePassword = ({ token }: Props) => {
         />
 
         <input type="hidden" name="token" value={token} />
-        {state.success && (
-          <p className="text-sm text-green-600">{state.success}</p>
-        )}
+        {state.success && <Response success>{state.success}</Response>}
         <SubmitButton />
       </form>
     </div>
