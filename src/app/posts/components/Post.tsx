@@ -12,6 +12,7 @@ import {
 import type { users, posts } from "@prisma/client";
 import DeleteModal from "./DeleteModal";
 import Link from "next/link";
+import { deletePost } from "../actions";
 
 type Props = {
   user: users;
@@ -79,9 +80,10 @@ const Post = ({
         </CardBody>
       </Card>
       <DeleteModal
-        postId={postId}
-        postTitle={title}
+        title={`Delete ${title} post`}
         isOpen={isOpen}
+        errorMessage="Creator ID does not match"
+        onDeleteHandler={() => deletePost(postId)}
         onOpenChange={onOpenChange}
       />
     </>

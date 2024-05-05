@@ -6,16 +6,22 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useState } from "react";
-import { deletePost } from "../actions";
 
 type Props = {
-  postId: string;
-  postTitle: string;
+  title: string;
   isOpen: boolean;
+  errorMessage?: string;
+  onDeleteHandler: () => Promise<void>;
   onOpenChange: () => void;
 };
 
-const DeleteModal = ({ postTitle, postId, isOpen, onOpenChange }: Props) => {
+const DeleteModal = ({
+  title,
+  isOpen,
+  errorMessage = "Some error occurred. Please try again.",
+  onDeleteHandler,
+  onOpenChange,
+}: Props) => {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,11 +29,11 @@ const DeleteModal = ({ postTitle, postId, isOpen, onOpenChange }: Props) => {
     setDeleting(true);
 
     try {
-      await deletePost(postId);
+      await onDeleteHandler();
     } catch (error) {
       console.error(error);
       setDeleting(false);
-      setError("Creator ID does not match");
+      setError(errorMessage);
     }
   };
 
@@ -37,8 +43,8 @@ const DeleteModal = ({ postTitle, postId, isOpen, onOpenChange }: Props) => {
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-2">
-              <h2>Delete {postTitle} post</h2>
-              <p>Are you sure you wanna delete this post?</p>
+              <h2>{title}</h2>
+              <p>Are you sure you wanna delete this?</p>
               {error && <p className="text-sm text-red-600">{error}</p>}
             </ModalHeader>
 
