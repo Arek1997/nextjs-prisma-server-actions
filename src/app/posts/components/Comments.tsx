@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Button, Textarea } from "@nextui-org/react";
 import { Prisma } from "@prisma/client";
 import { useFormState } from "react-dom";
@@ -28,9 +28,11 @@ const Comments = ({ userId, postId, postAuthorId, comments }: Props) => {
     error: "",
     invalidElement: "",
   });
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   useEffect(() => {
     if (state.success) {
+      formRef.current?.reset();
       router.refresh();
     }
   }, [state]);
@@ -47,7 +49,7 @@ const Comments = ({ userId, postId, postAuthorId, comments }: Props) => {
         );
       })}
 
-      <form action={formAction}>
+      <form ref={formRef} action={formAction}>
         <Textarea
           variant="faded"
           radius="sm"
