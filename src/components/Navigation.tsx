@@ -61,12 +61,14 @@ const Navigation = ({ hasSession }: Props) => {
       {hasSession && (
         <NavbarContent className="hidden gap-4 sm:flex" justify="center">
           {menuItems.map(({ name, href }, index) => {
+            const isActive = pathname.includes(href);
+
             return (
-              <NavbarItem isActive={href === pathname} key={`${name}-${index}`}>
+              <NavbarItem isActive={isActive} key={`${name}-${index}`}>
                 <Link
                   href={href}
                   aria-current={href === pathname ? "page" : "false"}
-                  color={href === pathname ? "primary" : "foreground"}
+                  color={isActive ? "primary" : "foreground"}
                 >
                   {name}
                 </Link>
@@ -96,10 +98,12 @@ const Navigation = ({ hasSession }: Props) => {
       {hasSession && (
         <NavbarMenu>
           {menuItems.map(({ name, href }, index) => {
+            const isActive = pathname.includes(href);
+
             return (
               <NavbarMenuItem key={`${name}-${index}`}>
                 <Link
-                  color={href === pathname ? "primary" : "foreground"}
+                  color={isActive ? "primary" : "foreground"}
                   aria-current={href === pathname ? "page" : "false"}
                   className="w-full"
                   href={href}
