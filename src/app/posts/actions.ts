@@ -1,11 +1,9 @@
 "use server";
 
 import prisma from "@/libs/prisma";
-import Session from "@/services/session";
 import { revalidatePath } from "next/cache";
-import Jwt from "@/services/jwt";
 import { z } from "zod";
-import { UserToken } from "@/types";
+import { getUserToken } from "../actions/getUser";
 
 const post = z.object({
   title: z
@@ -48,7 +46,7 @@ export const createPost = async (_: unknown, formData: FormData) => {
   const { title, message } = result.data;
 
   try {
-    const user = Jwt().verifyToken(Session().get()) as UserToken;
+    const user = await getUserToken();
     await prisma.posts.create({
       data: {
         user_id: user.id,
@@ -65,8 +63,57 @@ export const createPost = async (_: unknown, formData: FormData) => {
   }
 };
 
+export const editPost = async (_: unknown, formData: FormData) => {
+  const result = post.safeParse(Object.fromEntries(formData.entries()));
+
+  if (!result.success) {
+    const { message, path } = result.error.issues[0];
+
+    return {
+      success: false,
+      error: message,
+      invalidElement: path[0],
+    };
+  }
+
+  const { title, message } = result.data;
+  const postID = formData.get("post-id") as string;
+
+  try {
+    const user = await getUserToken();
+    await prisma.posts.update({
+      where: {
+        id: postID,
+        AND: {
+          user_id: user.id,
+        },
+      },
+
+      data: {
+        title,
+        message,
+        edited: true,
+      },
+    });
+
+    revalidatePath("/posts");
+    return {
+      success: true,
+      error: "",
+      invalidElement: "",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Some error occurred. Please try again.",
+      invalidElement: "general",
+    };
+  }
+};
+
 export const deletePost = async (postId: string) => {
-  const user = Jwt().verifyToken(Session().get()) as UserToken;
+  const user = await getUserToken();
 
   await prisma.posts.delete({
     where: {

@@ -13,6 +13,7 @@ import type { users, posts } from "@prisma/client";
 import DeleteModal from "./DeleteModal";
 import Link from "next/link";
 import { deletePost } from "../actions";
+import { formatDate } from "@/utils/functions";
 
 type Props = {
   user: users;
@@ -40,7 +41,7 @@ const Post = ({
               <span className="font-bold">{creator.name || "unknow"}</span>
             </p>
             <small className="text-default-500 underline">
-              {new Date(createdAt).toDateString()}
+              {formatDate(createdAt)}
             </small>
           </div>
           <h2 className="mt-2 text-large font-bold">{title}</h2>
@@ -63,7 +64,12 @@ const Post = ({
             </Button>
             {creatorId === loggedUserId && (
               <>
-                <Button className="uppercase" variant="light">
+                <Button
+                  as={Link}
+                  href={`/posts/${postId}/edit`}
+                  className="uppercase"
+                  variant="light"
+                >
                   Edit
                 </Button>
                 <Button
