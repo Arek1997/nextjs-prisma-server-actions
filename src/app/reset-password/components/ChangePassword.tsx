@@ -46,7 +46,6 @@ const SubmitButton = () => {
     <Button
       type="submit"
       className="mt-4"
-      radius="none"
       variant="ghost"
       isLoading={pending}
       isDisabled={pending}

@@ -11,7 +11,7 @@ const ProfilPage = async () => {
 
   return (
     <section className="mt-10 md:mx-auto md:max-w-[400px]">
-      <article className="space-y-4 border border-black p-4 text-left dark:border-white">
+      <article className="space-y-4 rounded-xl border border-black p-4 text-left dark:border-white">
         <h1 className="text-center font-bold">Profil details</h1>
         <p className="flex items-center justify-between gap-4">
           Profile name: <span>{currentUser.name}</span>
