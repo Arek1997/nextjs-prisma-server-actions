@@ -14,7 +14,7 @@ model comments {
   message    String
   user       users     @relation(fields: [user_id], references: [id])
   user_id    String    @db.ObjectId
-  posts      posts     @relation(fields: [posts_id], references: [id])
+  posts      posts     @relation(fields: [posts_id], references: [id], onDelete: Cascade)
   posts_id   String    @db.ObjectId
 }
 
