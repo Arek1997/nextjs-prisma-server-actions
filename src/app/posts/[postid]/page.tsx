@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getPostWithComments } from "../api";
-import Comments from "../components/Comments";
+import CommentsSection from "../components/CommentsSection";
 import { getUserToken } from "@/app/actions/getUser";
 import { logOutHandler } from "@/app/actions/logout";
 import { notFound } from "next/navigation";
@@ -66,7 +66,7 @@ const PostDetailsPage = async ({ params: { postid } }: Props) => {
         </footer>
       </article>
 
-      <Comments
+      <CommentsSection
         userId={user.value.id}
         postId={post.value.id}
         postAuthorId={post.value.user_id}
