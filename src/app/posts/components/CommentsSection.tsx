@@ -11,26 +11,36 @@ export type CommentsWithUser = Prisma.commentsGetPayload<{
 }>;
 
 type Props = {
-  userId: string;
+  currentUserId: string;
   postId: string;
   postAuthorId: string;
   comments: CommentsWithUser[];
 };
 
-const CommentsSection = ({ userId, postId, postAuthorId, comments }: Props) => {
+const CommentsSection = ({
+  currentUserId,
+  postId,
+  postAuthorId,
+  comments,
+}: Props) => {
   return (
     <div className="my-14 border-t pt-5 text-right">
       <h2 className="mb-4 text-left">Comments ({comments.length})</h2>
 
       {comments.map((item) => {
         return (
-          <Comment key={item.id} postAuthorId={postAuthorId} {...item}>
+          <Comment
+            key={item.id}
+            currentUserId={currentUserId}
+            isAuthor={item.user_id === postAuthorId}
+            {...item}
+          >
             {item.message}
           </Comment>
         );
       })}
 
-      <AddComment userId={userId} postId={postId} />
+      <AddComment userId={currentUserId} postId={postId} />
     </div>
   );
 };

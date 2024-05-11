@@ -67,7 +67,7 @@ const PostDetailsPage = async ({ params: { postid } }: Props) => {
       </article>
 
       <CommentsSection
-        userId={user.value.id}
+        currentUserId={user.value.id}
         postId={post.value.id}
         postAuthorId={post.value.user_id}
         comments={post.value.comments}

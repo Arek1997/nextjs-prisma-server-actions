@@ -1,16 +1,30 @@
 import { formatDate } from "@/utils/functions";
 import { type CommentsWithUser } from "./CommentsSection";
+import { cn } from "@nextui-org/react";
+import CommentOptions from "./CommentOptions";
 
 type CommentProps = {
-  postAuthorId: string;
+  isAuthor: boolean;
+  currentUserId: string;
   children: React.ReactNode;
 } & CommentsWithUser;
 
-const Comment = ({ createdAt, user, postAuthorId, children }: CommentProps) => {
-  const isAuthor = postAuthorId === user.id;
+const Comment = ({
+  createdAt,
+  user,
+  isAuthor,
+  currentUserId,
+  children,
+}: CommentProps) => {
+  const showEditOption = currentUserId === user.id;
 
   return (
-    <div className="mb-6 rounded-lg border p-4 text-left">
+    <div
+      className={cn(
+        "mb-6 rounded-lg border p-4 text-left",
+        showEditOption && "relative"
+      )}
+    >
       <div className="mb-2 flex items-center justify-between gap-4 text-xs">
         <p className="space-x-2">
           <span>{user.name}</span>
@@ -22,6 +36,8 @@ const Comment = ({ createdAt, user, postAuthorId, children }: CommentProps) => {
       </div>
 
       <p>{children}</p>
+
+      {showEditOption && <CommentOptions />}
     </div>
   );
 };
