@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useFormState } from "react-dom";
 import { Button, Input } from "@nextui-org/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { sendResetEmail } from "../actions";
-import { useFormState, useFormStatus } from "react-dom";
 import Response from "@/components/Response";
+import SubmitButton from "@/components/SubmitButton";
 
 const ForgotPassword = () => {
   const [showInputs, setShowInputs] = useState(false);
@@ -47,27 +48,11 @@ const ForgotPassword = () => {
               isRequired
             />
             {state?.success && <Response success>{state.success}</Response>}
-            <SubmitButton />
+            <SubmitButton className="mt-4" text="Send" pendingText="Sending" />
           </motion.form>
         )}
       </AnimatePresence>
     </div>
-  );
-};
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      className="mt-4"
-      variant="ghost"
-      isLoading={pending}
-      isDisabled={pending}
-    >
-      {pending ? "Sending" : "Send"}
-    </Button>
   );
 };
 

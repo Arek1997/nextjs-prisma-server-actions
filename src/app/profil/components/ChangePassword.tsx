@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useFormState } from "react-dom";
 import { Button } from "@nextui-org/react";
 import { motion, AnimatePresence } from "framer-motion";
 import InputWithEye from "@/components/InputWithEye";
+import SubmitButton from "@/components/SubmitButton";
 import { changePassword } from "../actions";
-import { useFormState, useFormStatus } from "react-dom";
 
 const ChangePassword = () => {
   const [showInputs, setShowInputs] = useState(false);
@@ -56,27 +57,15 @@ const ChangePassword = () => {
               isRequired
             />
 
-            <SubmitButton />
+            <SubmitButton
+              className="mt-4"
+              text="Change"
+              pendingText="Changing"
+            />
           </motion.form>
         )}
       </AnimatePresence>
     </div>
-  );
-};
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      className="mt-4"
-      variant="ghost"
-      isLoading={pending}
-      isDisabled={pending}
-    >
-      {pending ? "Changing" : "Change"}
-    </Button>
   );
 };
 

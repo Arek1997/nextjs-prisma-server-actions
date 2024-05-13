@@ -1,12 +1,13 @@
 "use client";
 
-import { Button, Input } from "@nextui-org/react";
+import { useFormState } from "react-dom";
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
+import { Input } from "@nextui-org/react";
 import { userLogin } from "./actions";
 import InputWithEye from "@/components/InputWithEye";
 import ForgotPassword from "../components/ForgotPassword";
 import Response from "@/components/Response";
+import SubmitButton from "@/components/SubmitButton";
 
 const Login = () => {
   const [state, formAction] = useFormState(userLogin, {
@@ -52,26 +53,10 @@ const Login = () => {
             <ForgotPassword />
           </p>
 
-          <SubmitButton />
+          <SubmitButton color="primary" text="Login" className="ml-auto flex" />
         </div>
       </form>
     </div>
-  );
-};
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      color="secondary"
-      type="submit"
-      className="ml-auto flex"
-      isLoading={pending}
-      isDisabled={pending}
-    >
-      Login
-    </Button>
   );
 };
 

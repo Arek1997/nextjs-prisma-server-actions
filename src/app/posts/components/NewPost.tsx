@@ -12,9 +12,10 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { createPost } from "../actions";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import { useEffect } from "react";
 import Response from "@/components/Response";
+import SubmitButton from "@/components/SubmitButton";
 
 const NewPosts = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -62,28 +63,17 @@ const NewPosts = () => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Cancel
                 </Button>
-                <SubmitButton />
+                <SubmitButton
+                  text="Create"
+                  pendingText="Creating"
+                  variant="solid"
+                />
               </ModalFooter>
             </form>
           )}
         </ModalContent>
       </Modal>
     </>
-  );
-};
-
-const SubmitButton = () => {
-  const status = useFormStatus();
-
-  return (
-    <Button
-      type="submit"
-      color="default"
-      isLoading={status.pending}
-      isDisabled={status.pending}
-    >
-      {status.pending ? "Creating" : "Create"}
-    </Button>
   );
 };
 

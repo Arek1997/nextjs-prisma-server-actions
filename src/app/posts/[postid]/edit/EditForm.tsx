@@ -1,11 +1,12 @@
 "use client";
 
-import { Button, Input, Textarea } from "@nextui-org/react";
-import { useFormState, useFormStatus } from "react-dom";
-import { editPost } from "../../actions";
-import Response from "@/components/Response";
 import { useEffect } from "react";
+import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
+import { Input, Textarea } from "@nextui-org/react";
+import Response from "@/components/Response";
+import SubmitButton from "@/components/SubmitButton";
+import { editPost } from "../../actions";
 
 type Props = {
   postid: string;
@@ -52,22 +53,13 @@ const EditForm = ({ postid, title, message }: Props) => {
       {state.invalidElement === "general" && (
         <Response error>{state.error}</Response>
       )}
-      <SubmitForm />
+      <SubmitButton
+        color="primary"
+        variant="flat"
+        text="Save"
+        pendingText="Saving"
+      />
     </form>
-  );
-};
-
-const SubmitForm = () => {
-  const status = useFormStatus();
-  return (
-    <Button
-      type="submit"
-      color="primary"
-      variant="flat"
-      isLoading={status.pending}
-    >
-      {status.pending ? "Saving" : "Save"}
-    </Button>
   );
 };
 
