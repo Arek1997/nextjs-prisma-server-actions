@@ -53,7 +53,11 @@ const Login = () => {
             <ForgotPassword />
           </p>
 
-          <SubmitButton color="primary" text="Login" className="ml-auto flex" />
+          <SubmitButton
+            color="secondary"
+            text="Login"
+            className="ml-auto flex"
+          />
         </div>
       </form>
     </div>

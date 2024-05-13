@@ -67,7 +67,7 @@ const Signup = () => {
           </p>
 
           <SubmitButton
-            color="primary"
+            color="secondary"
             className="ml-auto flex"
             text="Create"
             pendingText="Creating"
