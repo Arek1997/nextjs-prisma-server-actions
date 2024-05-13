@@ -33,7 +33,7 @@ const ProfilPage = async () => {
         )}
       </article>
 
-      <ProfilActions />
+      <ProfilActions userEmail={currentUser.email} />
     </section>
   );
 };

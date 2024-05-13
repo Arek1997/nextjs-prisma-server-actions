@@ -1,10 +1,15 @@
 "use client";
 
 import { Tabs, Tab } from "@nextui-org/react";
-import ChangePassword from "./ChangePassword";
 import Link from "next/link";
+import ChangePassword from "./ChangePassword";
+import DeleteProfile from "./DeleteProfile";
 
-const ProfilActions = () => {
+type Props = {
+  userEmail: string;
+};
+
+const ProfilActions = ({ userEmail }: Props) => {
   return (
     <>
       <h2 className="mb-4 mt-6 font-bold">Profil action</h2>
@@ -23,7 +28,11 @@ const ProfilActions = () => {
           title="Forgot password"
           as={Link}
           href="/reset-password"
-        ></Tab>
+        />
+
+        <Tab key="delete-profile" title="Delete profile">
+          <DeleteProfile userEmail={userEmail} />
+        </Tab>
       </Tabs>
     </>
   );

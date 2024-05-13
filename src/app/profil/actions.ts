@@ -3,6 +3,7 @@
 import { z } from "zod";
 import bcript from "bcrypt";
 import { passwordSchema } from "@/schema/password";
+import { emailSchema } from "@/schema/email";
 import prisma from "@/libs/prisma";
 import { logOutHandler } from "../actions/logout";
 import { getUserById } from "../actions/getUser";
@@ -54,6 +55,27 @@ export const changePassword = async (_: unknown, formData: FormData) => {
     },
     where: {
       id: user.id,
+    },
+  });
+
+  logOutHandler();
+};
+
+export const deleteProfile = async (_: unknown, formData: FormData) => {
+  const result = emailSchema.safeParse(formData.get("email"));
+
+  if (!result.success) {
+    const { message, path } = result.error.issues[0];
+
+    return {
+      error: message,
+      invalidElement: path[0],
+    };
+  }
+
+  await prisma.users.delete({
+    where: {
+      email: result.data,
     },
   });
 
