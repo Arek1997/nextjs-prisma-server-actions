@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, SVGProps } from "react";
 import { Input, InputProps } from "@nextui-org/react";
 
 const InputWithEye = (props: InputProps) => {
@@ -28,7 +28,7 @@ const InputWithEye = (props: InputProps) => {
   );
 };
 
-const EyeSlashFilledIcon = (props) => (
+const EyeSlashFilledIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     aria-hidden="true"
     fill="none"
@@ -62,7 +62,7 @@ const EyeSlashFilledIcon = (props) => (
   </svg>
 );
 
-const EyeFilledIcon = (props) => (
+const EyeFilledIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     aria-hidden="true"
     fill="none"
