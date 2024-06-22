@@ -96,7 +96,7 @@ export const editPost = async (_: unknown, formData: FormData) => {
       },
     });
 
-    revalidatePath("/posts");
+    revalidatePath(`/posts/${postID}`);
     return {
       success: true,
       error: "",
@@ -147,7 +147,7 @@ export const addComment = async (_: unknown, formData: FormData) => {
         user_id: userID,
       },
     });
-    revalidatePath("/posts");
+    revalidatePath(`/posts/${postID}`);
     return {
       success: true,
       error: "",
@@ -161,4 +161,57 @@ export const addComment = async (_: unknown, formData: FormData) => {
       invalidElement: "",
     };
   }
+};
+
+export const editComment = async (_: unknown, formData: FormData) => {
+  const result = comment.safeParse(formData.get("comment"));
+
+  if (!result.success) {
+    const { message, path } = result.error.issues[0];
+
+    return { success: false, error: message, invalidElement: path[0] };
+  }
+
+  try {
+    const postID = formData.get("post-id") as string;
+    const commentID = formData.get("comment-id") as string;
+    const commentMesage = result.data;
+
+    await prisma.comments.update({
+      where: {
+        id: commentID,
+      },
+      data: {
+        message: commentMesage,
+      },
+    });
+
+    revalidatePath(`/posts/${postID}`);
+    return {
+      success: true,
+      error: "",
+      invalidElement: "",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Faild to edit comment, some error occurred. Try again.",
+      invalidElement: "",
+    };
+  }
+};
+
+export const deleteComment = async (commentId: string, postId: string) => {
+  const user = await getUserToken();
+
+  await prisma.comments.delete({
+    where: {
+      id: commentId,
+      AND: {
+        user_id: user.id,
+      },
+    },
+  });
+  revalidatePath(`/posts/${postId}`);
 };
