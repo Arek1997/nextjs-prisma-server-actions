@@ -1,37 +1,18 @@
-import { NextResponse, type NextRequest } from "next/server";
-import Session from "./services/session";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const publicRoutes = ["login", "logout", "signup"];
+export default async function middleware(req: NextRequest) {
+  const session = req.cookies.get("authjs.session-token");
 
-export function middleware(request: NextRequest) {
-  const pathName = request.nextUrl.pathname.slice(1);
-  const isPublic = publicRoutes.includes(pathName);
-  const hasSession = Session().get();
-
-  if (pathName === "reset-password") {
-    return NextResponse.next();
+  if (!session) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if (isPublic && hasSession) {
-    return NextResponse.redirect(
-      new URL(process.env.DEFAULT_ROUTE!, request.url)
-    );
-  }
-
-  if (!isPublic && !hasSession) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|login|signup|reset-password).*)",
   ],
 };

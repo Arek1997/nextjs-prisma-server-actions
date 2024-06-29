@@ -16,6 +16,7 @@ import Logo from "@/components/Logo";
 import { usePathname } from "next/navigation";
 import ThemeSwitch from "./ThemeSwitch";
 import { logOutHandler } from "@/app/actions/logout";
+import { Session } from "next-auth";
 
 const menuItems = [
   {
@@ -29,7 +30,7 @@ const menuItems = [
 ] as const;
 
 type Props = {
-  hasSession: string | undefined;
+  hasSession: Session | null;
 };
 const Navigation = ({ hasSession }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

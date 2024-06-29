@@ -1,20 +1,15 @@
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/libs/prisma";
-import Jwt from "@/services/jwt";
-import Session from "@/services/session";
-import { UserToken } from "@/types";
-
-export const getUserToken = async () =>
-  Jwt().verifyToken(Session().get()) as UserToken;
 
 export const getUserById = async (id?: string) => {
   let userId;
 
   try {
     if (!id) {
-      const user = await getUserToken();
-      userId = user.id;
+      const token = await auth();
+      userId = token?.user?.id;
     } else {
       userId = id;
     }

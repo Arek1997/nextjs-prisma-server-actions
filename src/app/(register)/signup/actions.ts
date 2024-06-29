@@ -4,9 +4,10 @@ import prisma from "@/libs/prisma";
 import { z } from "zod";
 import bcript from "bcrypt";
 import { redirect } from "next/navigation";
-import Session from "@/services/session";
 import { emailSchema } from "@/schema/email";
 import { passwordSchema } from "@/schema/password";
+import { signIn } from "@/auth";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 const createAccountSchema = z.object({
   name: z.string({
@@ -55,7 +56,7 @@ export const createAccount = async (_: unknown, formData: FormData) => {
 
   const hashedPassword = await bcript.hash(password, 10);
 
-  const newUser = await prisma.users.create({
+  await prisma.users.create({
     data: {
       name,
       email,
@@ -63,8 +64,14 @@ export const createAccount = async (_: unknown, formData: FormData) => {
     },
   });
 
-  Session().create({
-    id: newUser.id,
-  });
+  try {
+    await signIn("credentials", { email, password });
+  } catch (error) {
+    console.error(error);
+    if (isRedirectError(error)) {
+      throw error;
+    }
+  }
+
   redirect(process.env.DEFAULT_ROUTE!);
 };

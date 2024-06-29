@@ -1,12 +1,12 @@
-import Session from "@/services/session";
-import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
-const RegisterLayout = ({ children }: PropsWithChildren) => {
-  const hasSession = Session().get();
+const RegisterLayout = async ({ children }: PropsWithChildren) => {
+  const hasSession = await auth();
 
   if (hasSession) {
-    redirect("/");
+    redirect("/profil");
   }
 
   return <>{children}</>;
