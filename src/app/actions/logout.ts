@@ -1,9 +1,9 @@
 "use server";
 
-import Session from "@/services/session";
-import { redirect } from "next/navigation";
+import { signOut } from "@/auth";
 
-export const logOutHandler = () => {
-  Session().destroy();
-  redirect("/login");
+export const logOutHandler = async () => {
+  await signOut({
+    redirectTo: "/login",
+  });
 };

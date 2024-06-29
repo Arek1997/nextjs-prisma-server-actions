@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { getPostWithComments } from "../api";
 import CommentsSection from "../components/CommentsSection";
-import { getUserToken } from "@/app/actions/getUser";
 import { logOutHandler } from "@/app/actions/logout";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/utils/functions";
+import { getUserById } from "@/app/actions/getUser";
 
 type Props = {
   params: { postid: string };
@@ -13,7 +13,7 @@ type Props = {
 const PostDetailsPage = async ({ params: { postid } }: Props) => {
   const [post, user] = await Promise.allSettled([
     getPostWithComments(postid),
-    getUserToken(),
+    getUserById(),
   ]);
 
   if (post.status === "rejected" || !post.value) {

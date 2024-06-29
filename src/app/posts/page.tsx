@@ -3,16 +3,15 @@ import Post from "./components/Post";
 import { getPosts } from "./api";
 import { notFound } from "next/navigation";
 import Response from "@/components/Response";
-import { getUserToken } from "../actions/getUser";
+import { auth } from "@/auth";
 
 const PostsPage = async () => {
   const posts = await getPosts();
+  const token = await auth();
 
-  if (!posts) {
+  if (!posts || !token) {
     notFound();
   }
-
-  const user = await getUserToken();
 
   return (
     <section className="grid justify-center">
@@ -24,7 +23,7 @@ const PostsPage = async () => {
         <Response>No posts right now</Response>
       ) : (
         posts.map((data) => (
-          <Post key={data.id} loggedUserId={user.id} {...data} />
+          <Post key={data.id} loggedUserId={token?.user?.id!} {...data} />
         ))
       )}
     </section>

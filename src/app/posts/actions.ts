@@ -3,7 +3,7 @@
 import prisma from "@/libs/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { getUserToken } from "../actions/getUser";
+import { auth } from "@/auth";
 
 const post = z.object({
   title: z
@@ -46,10 +46,10 @@ export const createPost = async (_: unknown, formData: FormData) => {
   const { title, message } = result.data;
 
   try {
-    const user = await getUserToken();
+    const token = await auth();
     await prisma.posts.create({
       data: {
-        user_id: user.id,
+        user_id: token?.user?.id!,
         title,
         message,
       },
@@ -80,12 +80,12 @@ export const editPost = async (_: unknown, formData: FormData) => {
   const postID = formData.get("post-id") as string;
 
   try {
-    const user = await getUserToken();
+    const token = await auth();
     await prisma.posts.update({
       where: {
         id: postID,
         AND: {
-          user_id: user.id,
+          user_id: token?.user?.id,
         },
       },
 
@@ -113,13 +113,13 @@ export const editPost = async (_: unknown, formData: FormData) => {
 };
 
 export const deletePost = async (postId: string) => {
-  const user = await getUserToken();
+  const token = await auth();
 
   await prisma.posts.delete({
     where: {
       id: postId,
       AND: {
-        user_id: user.id,
+        user_id: token?.user?.id!,
       },
     },
   });
@@ -203,13 +203,13 @@ export const editComment = async (_: unknown, formData: FormData) => {
 };
 
 export const deleteComment = async (commentId: string, postId: string) => {
-  const user = await getUserToken();
+  const token = await auth();
 
   await prisma.comments.delete({
     where: {
       id: commentId,
       AND: {
-        user_id: user.id,
+        user_id: token?.user?.id,
       },
     },
   });

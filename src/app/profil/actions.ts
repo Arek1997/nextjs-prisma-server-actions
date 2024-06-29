@@ -7,6 +7,7 @@ import { emailSchema } from "@/schema/email";
 import prisma from "@/libs/prisma";
 import { logOutHandler } from "../actions/logout";
 import { getUserById } from "../actions/getUser";
+import { auth } from "@/auth";
 
 const changePasswordSchema = z.object({
   "old-password": passwordSchema,
@@ -58,7 +59,7 @@ export const changePassword = async (_: unknown, formData: FormData) => {
     },
   });
 
-  logOutHandler();
+  await logOutHandler();
 };
 
 export const deleteProfile = async (_: unknown, formData: FormData) => {
@@ -73,11 +74,13 @@ export const deleteProfile = async (_: unknown, formData: FormData) => {
     };
   }
 
+  const token = await auth();
+
   await prisma.users.delete({
     where: {
-      email: result.data,
+      email: token?.user?.email!,
     },
   });
 
-  logOutHandler();
+  await logOutHandler();
 };
